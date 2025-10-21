@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Simulate form submission
+            // Get submit button and update its state
             const submitButton = contactForm.querySelector('button[type="submit"]');
             const originalText = submitButton.textContent;
 
@@ -278,31 +278,47 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.classList.add('loading');
             submitButton.textContent = 'Envoi en cours...';
 
-            // Simulate API call
-            setTimeout(() => {
+            // Send data to PHP backend
+            fetch('send-email.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.message || 'Erreur lors de l\'envoi du message');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle success
                 submitButton.disabled = false;
                 submitButton.classList.remove('loading');
                 submitButton.textContent = originalText;
 
-                // Show success message
-                alert(`Merci ${name} ! Votre message a été envoyé avec succès. Je vous répondrai dans les plus brefs délais.`);
+                if (data.success) {
+                    // Show success message
+                    alert(`Merci ${name} ! ${data.message}`);
 
-                // Reset form
-                contactForm.reset();
-            }, 2000);
+                    // Reset form
+                    contactForm.reset();
+                } else {
+                    // Show error message
+                    const errorMsg = data.errors ? data.errors.join('\n') : data.message;
+                    alert('Erreur : ' + errorMsg);
+                }
+            })
+            .catch(error => {
+                // Handle error
+                console.error('Erreur lors de l\'envoi du formulaire:', error);
 
-            // In a real application, you would send the data to a server here:
-            // fetch('/api/contact', {
-            //     method: 'POST',
-            //     body: formData
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     // Handle success
-            // })
-            // .catch(error => {
-            //     // Handle error
-            // });
+                submitButton.disabled = false;
+                submitButton.classList.remove('loading');
+                submitButton.textContent = originalText;
+
+                alert('Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer plus tard ou me contacter directement par email.');
+            });
         });
     }
 
