@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Solution Architect | Expert Cloud & FinOps</title>
+    <meta name="description" content="Expert Cloud Solution Architect spécialisé en transformation digitale, move-to-cloud et FinOps">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#fffcf3',
+                        foreground: '#f89576',
+                        accent1: '#5fa9c0',
+                        accent2: '#92a2a7',
+                        accent3: '#c59c8f'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        roboto: ['Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-roboto bg-background text-gray-800">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-background/95 backdrop-blur-sm shadow-sm transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <span class="font-poppins text-2xl font-bold text-accent1">CSA</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#accueil" class="nav-link font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Accueil</a>
+                        <a href="#apropos" class="nav-link font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">À propos</a>
+                        <a href="#expertises" class="nav-link font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Expertises</a>
+                        <a href="#realisations" class="nav-link font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Réalisations</a>
+                        <a href="#contact" class="nav-link font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-foreground focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-background border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#accueil" class="block px-3 py-2 font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Accueil</a>
+                <a href="#apropos" class="block px-3 py-2 font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">À propos</a>
+                <a href="#expertises" class="block px-3 py-2 font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Expertises</a>
+                <a href="#realisations" class="block px-3 py-2 font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Réalisations</a>
+                <a href="#contact" class="block px-3 py-2 font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Parallax -->
+    <section id="accueil" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="parallax-bg absolute inset-0 bg-gradient-to-br from-accent1/10 to-foreground/10"></div>
+        <div class="parallax-layer absolute inset-0 opacity-20">
+            <div class="absolute top-20 left-10 w-64 h-64 bg-accent1 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-foreground rounded-full blur-3xl"></div>
+        </div>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="fade-in-up">
+                <h1 class="font-poppins text-5xl md:text-7xl font-bold mb-6 text-gray-800">
+                    Cloud Solution <span class="text-foreground">Architect</span>
+                </h1>
+                <p class="font-roboto text-xl md:text-2xl mb-8 text-accent2 max-w-3xl mx-auto">
+                    Expert Cloud & FinOps | Transformation Digitale | Move-to-Cloud
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+                    <a href="#contact" class="btn-primary px-8 py-3 rounded-full font-poppins font-medium text-white bg-foreground hover:bg-foreground/90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                        Démarrer un projet
+                    </a>
+                    <a href="#expertises" class="btn-secondary px-8 py-3 rounded-full font-poppins font-medium text-accent1 border-2 border-accent1 hover:bg-accent1 hover:text-white transition-all duration-300 transform hover:scale-105">
+                        Découvrir mes expertises
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-accent2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="apropos" class="py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="font-poppins text-4xl md:text-5xl font-bold text-center mb-12 fade-in-up">
+                    À propos de <span class="text-accent1">moi</span>
+                </h2>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in-left">
+                        <div class="bg-gradient-to-br from-accent1/20 to-foreground/20 rounded-2xl p-8 aspect-square flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="w-48 h-48 mx-auto bg-accent1/30 rounded-full flex items-center justify-center mb-4">
+                                    <svg class="w-24 h-24 text-accent1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                                    </svg>
+                                </div>
+                                <p class="font-poppins text-lg font-semibold text-accent1">Cloud Expert</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fade-in-right">
+                        <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                            Passionné par les technologies cloud et la transformation digitale, je vous accompagne dans votre parcours vers le cloud avec expertise et pragmatisme.
+                        </p>
+                        <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                            Fort de plusieurs années d'expérience, j'aide les entreprises à optimiser leurs infrastructures cloud, réduire leurs coûts grâce au FinOps et réussir leur migration vers le cloud.
+                        </p>
+                        <button class="modal-trigger btn-tertiary px-6 py-3 rounded-lg font-poppins font-medium text-foreground border-2 border-foreground hover:bg-foreground hover:text-white transition-all duration-300" data-modal="modal-about">
+                            En savoir plus sur mon parcours
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expertises Section -->
+    <section id="expertises" class="py-20 bg-background">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="font-poppins text-4xl md:text-5xl font-bold text-center mb-4 fade-in-up">
+                Mes <span class="text-foreground">Expertises</span>
+            </h2>
+            <p class="text-center text-accent2 mb-16 fade-in-up">Solutions Cloud sur mesure pour votre transformation digitale</p>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Expertise 1 -->
+                <div class="expertise-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 fade-in-up">
+                    <div class="w-16 h-16 bg-accent1/10 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-accent1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-poppins text-2xl font-semibold mb-4 text-gray-800">Cloud Architecture</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Conception d'architectures cloud scalables, sécurisées et hautement disponibles adaptées à vos besoins métier.
+                    </p>
+                    <button class="modal-trigger text-accent1 font-poppins font-medium hover:text-foreground transition-colors duration-300 flex items-center group" data-modal="modal-cloud">
+                        Découvrir
+                        <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Expertise 2 -->
+                <div class="expertise-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 fade-in-up">
+                    <div class="w-16 h-16 bg-foreground/10 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-poppins text-2xl font-semibold mb-4 text-gray-800">FinOps</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Optimisation des coûts cloud avec analyse détaillée, recommandations et mise en place de bonnes pratiques FinOps.
+                    </p>
+                    <button class="modal-trigger text-accent1 font-poppins font-medium hover:text-foreground transition-colors duration-300 flex items-center group" data-modal="modal-finops">
+                        Découvrir
+                        <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Expertise 3 -->
+                <div class="expertise-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 fade-in-up">
+                    <div class="w-16 h-16 bg-accent3/10 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-accent3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-poppins text-2xl font-semibold mb-4 text-gray-800">Move-to-Cloud</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Accompagnement complet dans votre migration cloud : stratégie, planning, exécution et formation des équipes.
+                    </p>
+                    <button class="modal-trigger text-accent1 font-poppins font-medium hover:text-foreground transition-colors duration-300 flex items-center group" data-modal="modal-migration">
+                        Découvrir
+                        <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Réalisations Section -->
+    <section id="realisations" class="py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="font-poppins text-4xl md:text-5xl font-bold text-center mb-4 fade-in-up">
+                Mes <span class="text-accent1">Réalisations</span>
+            </h2>
+            <p class="text-center text-accent2 mb-16 fade-in-up">Projets réussis et transformations réalisées</p>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Réalisation 1 -->
+                <div class="realisation-card bg-gradient-to-br from-accent1/5 to-transparent rounded-2xl p-8 border border-accent1/20 hover:border-accent1/40 transition-all duration-300 fade-in-up">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 bg-accent1 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="font-poppins text-xl font-semibold mb-3 text-gray-800">Migration AWS Multi-Comptes</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Accompagnement d'une entreprise SaaS dans sa migration complète vers AWS avec architecture multi-comptes et réduction de 40% des coûts.
+                    </p>
+                    <button class="modal-trigger text-accent1 font-poppins font-medium hover:text-foreground transition-colors duration-300 flex items-center group" data-modal="modal-projet1">
+                        Voir les détails
+                        <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Réalisation 2 -->
+                <div class="realisation-card bg-gradient-to-br from-foreground/5 to-transparent rounded-2xl p-8 border border-foreground/20 hover:border-foreground/40 transition-all duration-300 fade-in-up">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 bg-foreground rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="font-poppins text-xl font-semibold mb-3 text-gray-800">Optimisation FinOps Azure</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Audit et optimisation des ressources Azure pour une entreprise du retail, économie de 250k€/an grâce aux recommandations FinOps.
+                    </p>
+                    <button class="modal-trigger text-accent1 font-poppins font-medium hover:text-foreground transition-colors duration-300 flex items-center group" data-modal="modal-projet2">
+                        Voir les détails
+                        <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Réalisation 3 -->
+                <div class="realisation-card bg-gradient-to-br from-accent3/5 to-transparent rounded-2xl p-8 border border-accent3/20 hover:border-accent3/40 transition-all duration-300 fade-in-up">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 bg-accent3 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="font-poppins text-xl font-semibold mb-3 text-gray-800">Infrastructure as Code GCP</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Conception et déploiement d'une infrastructure complète sur GCP avec Terraform, CI/CD et monitoring avancé.
+                    </p>
+                    <button class="modal-trigger text-accent1 font-poppins font-medium hover:text-foreground transition-colors duration-300 flex items-center group" data-modal="modal-projet3">
+                        Voir les détails
+                        <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Réalisation 4 -->
+                <div class="realisation-card bg-gradient-to-br from-accent2/5 to-transparent rounded-2xl p-8 border border-accent2/20 hover:border-accent2/40 transition-all duration-300 fade-in-up">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 bg-accent2 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="font-poppins text-xl font-semibold mb-3 text-gray-800">Transformation Cloud Hybride</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Mise en place d'une architecture hybride cloud-on-premise pour un secteur bancaire avec sécurité renforcée et compliance.
+                    </p>
+                    <button class="modal-trigger text-accent1 font-poppins font-medium hover:text-foreground transition-colors duration-300 flex items-center group" data-modal="modal-projet4">
+                        Voir les détails
+                        <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-background">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="font-poppins text-4xl md:text-5xl font-bold text-center mb-4 fade-in-up">
+                    Travaillons <span class="text-foreground">ensemble</span>
+                </h2>
+                <p class="text-center text-accent2 mb-16 fade-in-up">Discutons de votre projet de transformation cloud</p>
+
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="fade-in-left">
+                        <h3 class="font-poppins text-2xl font-semibold mb-6 text-gray-800">Contactez-moi</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-accent1/10 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
+                                    <svg class="w-6 h-6 text-accent1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-poppins font-medium text-gray-800">Email</p>
+                                    <a href="mailto:contact@cloudarchitect.fr" class="text-accent2 hover:text-accent1 transition-colors">contact@cloudarchitect.fr</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-foreground/10 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
+                                    <svg class="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-poppins font-medium text-gray-800">LinkedIn</p>
+                                    <a href="https://linkedin.com" target="_blank" class="text-accent2 hover:text-accent1 transition-colors">linkedin.com/in/cloudarchitect</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-accent3/10 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
+                                    <svg class="w-6 h-6 text-accent3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-poppins font-medium text-gray-800">Localisation</p>
+                                    <p class="text-accent2">France - Remote possible</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fade-in-right">
+                        <form class="space-y-6">
+                            <div>
+                                <label for="name" class="block font-poppins font-medium text-gray-700 mb-2">Nom</label>
+                                <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-accent1 focus:ring-2 focus:ring-accent1/20 outline-none transition-all duration-300" placeholder="Votre nom">
+                            </div>
+                            <div>
+                                <label for="email" class="block font-poppins font-medium text-gray-700 mb-2">Email</label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-accent1 focus:ring-2 focus:ring-accent1/20 outline-none transition-all duration-300" placeholder="votre@email.com">
+                            </div>
+                            <div>
+                                <label for="message" class="block font-poppins font-medium text-gray-700 mb-2">Message</label>
+                                <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-accent1 focus:ring-2 focus:ring-accent1/20 outline-none transition-all duration-300 resize-none" placeholder="Parlez-moi de votre projet..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full px-8 py-3 rounded-lg font-poppins font-medium text-white bg-foreground hover:bg-foreground/90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                                Envoyer le message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-8 border-t border-gray-200">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-gray-600 font-roboto">
+                    &copy; 2025 Cloud Solution Architect. Tous droits réservés.
+                </p>
+                <p class="text-accent2 mt-2">
+                    Expert Cloud & FinOps | Transformation Digitale
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Template -->
+    <div id="modal-overlay" class="modal-overlay fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="modal-container min-h-screen px-4 flex items-center justify-center">
+            <div class="modal-content bg-white rounded-2xl max-w-3xl w-full transform scale-95 transition-transform duration-300 shadow-2xl">
+                <!-- Modal header -->
+                <div class="modal-header flex items-center justify-between p-6 border-b border-gray-200">
+                    <h3 class="modal-title font-poppins text-2xl font-semibold text-gray-800"></h3>
+                    <button class="modal-close text-gray-400 hover:text-gray-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Modal body with internal scroll -->
+                <div class="modal-body overflow-y-auto" style="max-height: 60vh;">
+                    <div class="p-6">
+                        <div class="modal-image-container mb-6 rounded-xl overflow-hidden bg-gradient-to-br from-accent1/10 to-foreground/10 hidden">
+                            <img class="modal-image w-full h-64 object-cover" src="" alt="">
+                        </div>
+                        <div class="modal-text text-gray-700 leading-relaxed space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Contents Data -->
+    <div id="modal-data" class="hidden">
+        <!-- About Modal -->
+        <div data-modal-id="modal-about">
+            <div class="modal-title-content">Mon Parcours Professionnel</div>
+            <div class="modal-text-content">
+                <h4 class="font-poppins font-semibold text-xl mb-3 text-accent1">Une expertise forgée par l'expérience</h4>
+                <p class="mb-4">
+                    Avec plus de 10 ans d'expérience dans le domaine de l'infrastructure IT et 6 ans spécialisé sur les technologies cloud, j'ai accompagné des dizaines d'entreprises dans leur transformation digitale.
+                </p>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Certifications</h4>
+                <ul class="list-disc list-inside mb-4 space-y-1 text-gray-600">
+                    <li>AWS Solutions Architect Professional</li>
+                    <li>Microsoft Azure Solutions Architect Expert</li>
+                    <li>Google Cloud Professional Cloud Architect</li>
+                    <li>FinOps Certified Practitioner</li>
+                    <li>Terraform Associate</li>
+                </ul>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Compétences clés</h4>
+                <p class="mb-2">
+                    Ma force réside dans ma capacité à traduire les besoins métier en solutions techniques robustes et scalables. Je maîtrise l'ensemble de l'écosystème cloud (AWS, Azure, GCP) et les outils d'infrastructure as code (Terraform, CloudFormation, ARM Templates).
+                </p>
+                <p>
+                    Mon approche FinOps me permet d'optimiser continuellement les coûts tout en maintenant performance et fiabilité. Je privilégie toujours l'automatisation, la sécurité et les bonnes pratiques DevOps/SRE.
+                </p>
+            </div>
+            <div class="modal-image-url"></div>
+        </div>
+
+        <!-- Cloud Architecture Modal -->
+        <div data-modal-id="modal-cloud">
+            <div class="modal-title-content">Cloud Architecture</div>
+            <div class="modal-text-content">
+                <h4 class="font-poppins font-semibold text-xl mb-3 text-accent1">Architecture Cloud sur mesure</h4>
+                <p class="mb-4">
+                    Je conçois des architectures cloud adaptées à vos besoins spécifiques, en tenant compte de vos contraintes techniques, budgétaires et réglementaires.
+                </p>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Services proposés</h4>
+                <ul class="list-disc list-inside mb-4 space-y-2 text-gray-600">
+                    <li><strong>Design d'architecture:</strong> Conception de solutions cloud scalables et résilientes (microservices, serverless, conteneurs)</li>
+                    <li><strong>Well-Architected Review:</strong> Audit selon les frameworks AWS, Azure et GCP pour identifier les axes d'amélioration</li>
+                    <li><strong>Haute disponibilité:</strong> Mise en place de stratégies multi-AZ, multi-région et disaster recovery</li>
+                    <li><strong>Sécurité:</strong> Implémentation des meilleures pratiques de sécurité cloud (IAM, encryption, network security)</li>
+                    <li><strong>Performance:</strong> Optimisation des performances avec CDN, caching, auto-scaling</li>
+                </ul>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Technologies</h4>
+                <p>
+                    AWS (EC2, ECS, EKS, Lambda, S3, RDS, DynamoDB), Azure (VMs, AKS, Functions, Storage, CosmosDB), GCP (Compute Engine, GKE, Cloud Functions, Cloud Storage), Kubernetes, Docker, Terraform, Ansible
+                </p>
+            </div>
+            <div class="modal-image-url"></div>
+        </div>
+
+        <!-- FinOps Modal -->
+        <div data-modal-id="modal-finops">
+            <div class="modal-title-content">FinOps & Optimisation des Coûts</div>
+            <div class="modal-text-content">
+                <h4 class="font-poppins font-semibold text-xl mb-3 text-accent1">Maîtrisez vos dépenses cloud</h4>
+                <p class="mb-4">
+                    Le FinOps (Financial Operations) est une discipline clé pour optimiser vos investissements cloud. Je vous aide à réduire vos coûts de 30% à 50% en moyenne tout en améliorant vos performances.
+                </p>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Ma méthodologie FinOps</h4>
+                <ul class="list-disc list-inside mb-4 space-y-2 text-gray-600">
+                    <li><strong>Audit complet:</strong> Analyse détaillée de vos dépenses cloud actuelles et identification des gaspillages</li>
+                    <li><strong>Rightsizing:</strong> Dimensionnement optimal de vos ressources (instances, stockage, bases de données)</li>
+                    <li><strong>Reserved Instances & Savings Plans:</strong> Stratégie d'engagement pour réduire les coûts jusqu'à 72%</li>
+                    <li><strong>Spot Instances:</strong> Utilisation intelligente des instances spot pour les workloads adaptés</li>
+                    <li><strong>Monitoring & Alerting:</strong> Mise en place de dashboards et alertes budgétaires</li>
+                    <li><strong>Culture FinOps:</strong> Formation des équipes aux bonnes pratiques de gestion des coûts</li>
+                </ul>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Outils utilisés</h4>
+                <p>
+                    AWS Cost Explorer, Azure Cost Management, GCP Cost Management, CloudHealth, Cloudability, Kubecost, scripts d'automatisation personnalisés
+                </p>
+                <div class="bg-accent1/10 rounded-lg p-4 mt-4">
+                    <p class="text-sm text-gray-700">
+                        <strong>Résultat moyen:</strong> Économies de 40% sur la facture cloud mensuelle dans les 3 premiers mois, avec un ROI immédiat sur l'investissement de la mission.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-image-url"></div>
+        </div>
+
+        <!-- Migration Modal -->
+        <div data-modal-id="modal-migration">
+            <div class="modal-title-content">Migration & Move-to-Cloud</div>
+            <div class="modal-text-content">
+                <h4 class="font-poppins font-semibold text-xl mb-3 text-accent1">Réussissez votre migration cloud</h4>
+                <p class="mb-4">
+                    La migration vers le cloud est un projet stratégique qui nécessite une planification rigoureuse et une exécution maîtrisée. Je vous accompagne à chaque étape pour garantir le succès de votre transformation.
+                </p>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Approche de migration</h4>
+                <div class="mb-4 space-y-3">
+                    <div>
+                        <p class="font-medium text-gray-800">1. Assessment & Discovery</p>
+                        <p class="text-sm text-gray-600 ml-4">Inventaire complet de vos applications et infrastructures, analyse des dépendances, évaluation de la cloud-readiness</p>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-800">2. Stratégie de migration</p>
+                        <p class="text-sm text-gray-600 ml-4">Définition de la stratégie (6R: Rehost, Replatform, Refactor, Repurchase, Retire, Retain), priorisation des workloads</p>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-800">3. Proof of Concept</p>
+                        <p class="text-sm text-gray-600 ml-4">Migration pilote pour valider l'approche et identifier les risques</p>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-800">4. Exécution</p>
+                        <p class="text-sm text-gray-600 ml-4">Migration par vagues avec tests de validation à chaque étape</p>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-800">5. Optimisation post-migration</p>
+                        <p class="text-sm text-gray-600 ml-4">Optimisation des coûts, performances et sécurité après la migration</p>
+                    </div>
+                </div>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Livrables</h4>
+                <ul class="list-disc list-inside space-y-1 text-gray-600">
+                    <li>Plan de migration détaillé avec timeline et risques</li>
+                    <li>Documentation d'architecture cible</li>
+                    <li>Scripts d'automatisation de migration</li>
+                    <li>Runbooks de déploiement et rollback</li>
+                    <li>Formation des équipes IT</li>
+                </ul>
+            </div>
+            <div class="modal-image-url"></div>
+        </div>
+
+        <!-- Projet 1 Modal -->
+        <div data-modal-id="modal-projet1">
+            <div class="modal-title-content">Migration AWS Multi-Comptes</div>
+            <div class="modal-text-content">
+                <h4 class="font-poppins font-semibold text-xl mb-3 text-accent1">Contexte du projet</h4>
+                <p class="mb-4">
+                    Une scale-up SaaS avec 50+ microservices hébergés sur des serveurs dédiés souhaitait migrer vers AWS pour gagner en agilité et réduire ses coûts d'infrastructure.
+                </p>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Mission réalisée</h4>
+                <ul class="list-disc list-inside mb-4 space-y-2 text-gray-600">
+                    <li>Audit de l'infrastructure existante (200+ serveurs)</li>
+                    <li>Conception d'une architecture AWS multi-comptes (AWS Organizations) avec séparation dev/staging/prod</li>
+                    <li>Mise en place d'une landing zone AWS avec Control Tower</li>
+                    <li>Migration de 50+ microservices vers ECS/Fargate</li>
+                    <li>Implémentation CI/CD avec GitLab et AWS CodePipeline</li>
+                    <li>Configuration du monitoring avec CloudWatch et Datadog</li>
+                    <li>Optimisation FinOps avec Reserved Instances et Savings Plans</li>
+                </ul>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Résultats</h4>
+                <div class="bg-accent1/10 rounded-lg p-4 space-y-2">
+                    <p class="text-sm"><strong>Réduction des coûts:</strong> -40% sur la facture mensuelle</p>
+                    <p class="text-sm"><strong>Time-to-market:</strong> Déploiements 5x plus rapides</p>
+                    <p class="text-sm"><strong>Disponibilité:</strong> SLA passé de 99.5% à 99.95%</p>
+                    <p class="text-sm"><strong>Durée:</strong> 6 mois de la conception au go-live</p>
+                </div>
+            </div>
+            <div class="modal-image-url"></div>
+        </div>
+
+        <!-- Projet 2 Modal -->
+        <div data-modal-id="modal-projet2">
+            <div class="modal-title-content">Optimisation FinOps Azure</div>
+            <div class="modal-text-content">
+                <h4 class="font-poppins font-semibold text-xl mb-3 text-accent1">Contexte du projet</h4>
+                <p class="mb-4">
+                    Un retailer international avec une infrastructure Azure complexe (500+ ressources) constatait une augmentation de 30% de sa facture cloud sur 12 mois sans augmentation proportionnelle de l'activité.
+                </p>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Mission réalisée</h4>
+                <ul class="list-disc list-inside mb-4 space-y-2 text-gray-600">
+                    <li>Audit complet des ressources Azure avec Azure Cost Management et scripts PowerShell personnalisés</li>
+                    <li>Identification de 150+ ressources orphelines ou sous-utilisées</li>
+                    <li>Rightsizing de 80+ machines virtuelles (réduction de taille moyenne de 40%)</li>
+                    <li>Migration de 30+ VMs vers Azure Reserved Instances (3 ans)</li>
+                    <li>Optimisation du stockage (lifecycle policies, passage à des tiers moins chers)</li>
+                    <li>Mise en place de budgets et alertes par département</li>
+                    <li>Formation des équipes aux bonnes pratiques FinOps</li>
+                    <li>Création de dashboards Power BI pour suivi mensuel des coûts</li>
+                </ul>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Résultats</h4>
+                <div class="bg-foreground/10 rounded-lg p-4 space-y-2">
+                    <p class="text-sm"><strong>Économies:</strong> 250 000€/an soit -42% de la facture</p>
+                    <p class="text-sm"><strong>Quick wins:</strong> 80 000€ économisés le premier mois</p>
+                    <p class="text-sm"><strong>Visibilité:</strong> Dashboards temps réel par service/projet</p>
+                    <p class="text-sm"><strong>Culture:</strong> Adoption FinOps par 100% des équipes dev</p>
+                </div>
+            </div>
+            <div class="modal-image-url"></div>
+        </div>
+
+        <!-- Projet 3 Modal -->
+        <div data-modal-id="modal-projet3">
+            <div class="modal-title-content">Infrastructure as Code GCP</div>
+            <div class="modal-text-content">
+                <h4 class="font-poppins font-semibold text-xl mb-3 text-accent1">Contexte du projet</h4>
+                <p class="mb-4">
+                    Une startup en hypercroissance devait industrialiser son infrastructure GCP pour supporter son expansion internationale. L'infrastructure était gérée manuellement via la console, rendant les déploiements lents et risqués.
+                </p>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Mission réalisée</h4>
+                <ul class="list-disc list-inside mb-4 space-y-2 text-gray-600">
+                    <li>Revue de l'architecture existante et conception de l'architecture cible</li>
+                    <li>Infrastructure as Code complète avec Terraform (modules réutilisables)</li>
+                    <li>Mise en place de GKE (Google Kubernetes Engine) pour les applications conteneurisées</li>
+                    <li>Configuration de Cloud Build pour CI/CD automatisé</li>
+                    <li>Implémentation de GitOps avec ArgoCD</li>
+                    <li>Monitoring avancé avec Cloud Monitoring, Cloud Logging et Grafana</li>
+                    <li>Alerting PagerDuty pour on-call</li>
+                    <li>Sécurisation avec Workload Identity, Binary Authorization et Policy Controller</li>
+                </ul>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Résultats</h4>
+                <div class="bg-accent3/10 rounded-lg p-4 space-y-2">
+                    <p class="text-sm"><strong>Déploiements:</strong> De 2-3 par semaine à 20+ par jour</p>
+                    <p class="text-sm"><strong>MTTR:</strong> Mean Time To Recovery divisé par 4</p>
+                    <p class="text-sm"><strong>Reproductibilité:</strong> Déploiement d'une région complète en 30min</p>
+                    <p class="text-sm"><strong>Sécurité:</strong> 0 incidents de sécurité depuis le déploiement</p>
+                </div>
+            </div>
+            <div class="modal-image-url"></div>
+        </div>
+
+        <!-- Projet 4 Modal -->
+        <div data-modal-id="modal-projet4">
+            <div class="modal-title-content">Cloud Hybride Banking</div>
+            <div class="modal-text-content">
+                <h4 class="font-poppins font-semibold text-xl mb-3 text-accent1">Contexte du projet</h4>
+                <p class="mb-4">
+                    Une institution bancaire devait moderniser son SI tout en conservant certaines applications critiques on-premise pour des raisons réglementaires. L'objectif était de créer une architecture hybride sécurisée et performante.
+                </p>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Mission réalisée</h4>
+                <ul class="list-disc list-inside mb-4 space-y-2 text-gray-600">
+                    <li>Conception d'architecture hybride AWS + datacenter on-premise</li>
+                    <li>Mise en place de connexions Direct Connect redondantes</li>
+                    <li>Implémentation de Transit Gateway pour le routing inter-VPC</li>
+                    <li>Déploiement de solutions de sécurité (WAF, Shield, GuardDuty, Security Hub)</li>
+                    <li>Chiffrement end-to-end avec AWS KMS et HSM on-premise</li>
+                    <li>Mise en conformité PCI-DSS et audit de sécurité</li>
+                    <li>Disaster Recovery Plan avec RTO < 4h et RPO < 15min</li>
+                    <li>Formation des équipes et documentation complète</li>
+                </ul>
+                <h4 class="font-poppins font-semibold text-lg mb-2 text-foreground">Résultats</h4>
+                <div class="bg-accent2/10 rounded-lg p-4 space-y-2">
+                    <p class="text-sm"><strong>Sécurité:</strong> Certification PCI-DSS obtenue</p>
+                    <p class="text-sm"><strong>Performance:</strong> Latence < 5ms entre cloud et on-premise</p>
+                    <p class="text-sm"><strong>Résilience:</strong> Architecture multi-AZ avec 99.99% SLA</p>
+                    <p class="text-sm"><strong>Scalabilité:</strong> Capacité à gérer 10x le trafic actuel</p>
+                </div>
+            </div>
+            <div class="modal-image-url"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
