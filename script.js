@@ -83,10 +83,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (scrolled <= heroHeight) {
             if (parallaxBg) {
-                parallaxBg.style.transform = `translateY(${scrolled * 0.5}px)`;
+                parallaxBg.style.transform = `translateY(${scrolled * 0.8}px)`;
             }
             if (parallaxLayer) {
-                parallaxLayer.style.transform = `translateY(${scrolled * 0.3}px)`;
+                parallaxLayer.style.transform = `translateY(${scrolled * 0.6}px)`;
             }
         }
     });
@@ -344,10 +344,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (scrolled <= heroHeight) {
             if (parallaxBg) {
-                parallaxBg.style.transform = `translateY(${scrolled * 0.5}px)`;
+                parallaxBg.style.transform = `translateY(${scrolled * 0.8}px)`;
             }
             if (parallaxLayer) {
-                parallaxLayer.style.transform = `translateY(${scrolled * 0.3}px)`;
+                parallaxLayer.style.transform = `translateY(${scrolled * 0.6}px)`;
             }
         }
     }, 10));
