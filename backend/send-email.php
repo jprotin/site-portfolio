@@ -101,9 +101,9 @@ function logError($message) {
 }
 
 /**
- * Fonction pour vérifier le token reCAPTCHA v2
+ * Fonction pour vérifier le token reCAPTCHA v2 avec retry
  */
-function verifyRecaptcha($token) {
+function verifyRecaptcha($token, $maxRetries = 3) {
     // Log pour debugging
     logError('Début vérification reCAPTCHA - Token reçu: ' . (empty($token) ? 'VIDE' : 'présent (' . strlen($token) . ' caractères)'));
     logError('RECAPTCHA_SECRET_KEY configurée: ' . (empty(RECAPTCHA_SECRET_KEY) ? 'NON' : 'OUI (' . strlen(RECAPTCHA_SECRET_KEY) . ' caractères)'));
@@ -127,27 +127,85 @@ function verifyRecaptcha($token) {
 
     logError('Appel API reCAPTCHA avec IP: ' . ($data['remoteip'] ?? 'non définie'));
 
-    // Appeler l'API Google reCAPTCHA
-    $options = [
-        'http' => [
-            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method'  => 'POST',
-            'content' => http_build_query($data),
-            'timeout' => 10
-        ]
-    ];
+    // Fonction interne pour effectuer l'appel cURL
+    $callApi = function() use ($data) {
+        $ch = curl_init();
 
-    $context  = stream_context_create($options);
-    $response = @file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+        curl_setopt_array($ch, [
+            CURLOPT_URL => 'https://www.google.com/recaptcha/api/siteverify',
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query($data),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 15,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_MAXREDIRS => 0,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/x-www-form-urlencoded',
+                'Accept: application/json'
+            ]
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
+        $curlErrno = curl_errno($ch);
+        curl_close($ch);
+
+        return [
+            'response' => $response,
+            'httpCode' => $httpCode,
+            'error' => $curlError,
+            'errno' => $curlErrno
+        ];
+    };
+
+    // Retry avec exponential backoff
+    $attempt = 0;
+    $response = false;
+    $lastError = '';
+
+    while ($attempt < $maxRetries) {
+        $attempt++;
+        logError("Tentative $attempt/$maxRetries d'appel à l'API reCAPTCHA");
+
+        $result = $callApi();
+
+        if ($result['errno'] === 0 && $result['httpCode'] === 200 && $result['response'] !== false) {
+            // Succès
+            $response = $result['response'];
+            logError("Succès de l'appel API (tentative $attempt) - Code HTTP: " . $result['httpCode']);
+            break;
+        } else {
+            // Échec - log de l'erreur
+            $lastError = $result['error'] ?: 'Réponse vide ou code HTTP invalide';
+            logError("Échec tentative $attempt - Code HTTP: {$result['httpCode']}, Errno: {$result['errno']}, Erreur: $lastError");
+
+            // Si ce n'est pas la dernière tentative, attendre avant de réessayer
+            if ($attempt < $maxRetries) {
+                // Exponential backoff: 1s, 2s, 4s
+                $waitTime = pow(2, $attempt - 1);
+                logError("Attente de {$waitTime}s avant nouvelle tentative...");
+                sleep($waitTime);
+            }
+        }
+    }
 
     if ($response === false) {
-        logError('Échec de la connexion à l\'API reCAPTCHA - Vérifiez la connectivité réseau');
+        logError("Échec de la connexion à l'API reCAPTCHA après $maxRetries tentatives - Dernière erreur: $lastError");
         return false;
     }
 
     logError('Réponse brute de l\'API reCAPTCHA: ' . $response);
 
     $result = json_decode($response, true);
+
+    if ($result === null) {
+        logError('Échec du décodage JSON de la réponse reCAPTCHA');
+        return false;
+    }
 
     // Vérifier la réponse (reCAPTCHA v2)
     if (!isset($result['success']) || !$result['success']) {
