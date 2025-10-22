@@ -64,9 +64,8 @@ define('SMTP_USERNAME', $_ENV['SMTP_USERNAME'] ?? '');
 define('SMTP_PASSWORD', base64_decode($_ENV['SMTP_PASSWORD']) ?? '');
 define('SMTP_ENCRYPTION', $_ENV['SMTP_ENCRYPTION'] ?? 'tls');
 
-// Configuration Google reCAPTCHA v3
+// Configuration Google reCAPTCHA v2
 define('RECAPTCHA_SECRET_KEY', $_ENV['RECAPTCHA_SECRET_KEY'] ?? '');
-define('RECAPTCHA_MINIMUM_SCORE', $_ENV['RECAPTCHA_MINIMUM_SCORE'] ?? 0.5);
 
 /**
  * Fonction pour nettoyer les données d'entrée
@@ -102,7 +101,7 @@ function logError($message) {
 }
 
 /**
- * Fonction pour vérifier le token reCAPTCHA v3
+ * Fonction pour vérifier le token reCAPTCHA v2
  */
 function verifyRecaptcha($token) {
     if (empty(RECAPTCHA_SECRET_KEY)) {
@@ -142,21 +141,10 @@ function verifyRecaptcha($token) {
 
     $result = json_decode($response, true);
 
-    // Vérifier la réponse
+    // Vérifier la réponse (reCAPTCHA v2)
     if (!isset($result['success']) || !$result['success']) {
-        logError('Échec de la validation reCAPTCHA: ' . json_encode($result));
-        return false;
-    }
-
-    // Vérifier le score (reCAPTCHA v3 retourne un score entre 0.0 et 1.0)
-    if (!isset($result['score']) || $result['score'] < RECAPTCHA_MINIMUM_SCORE) {
-        logError('Score reCAPTCHA trop faible: ' . ($result['score'] ?? 'N/A'));
-        return false;
-    }
-
-    // Vérifier l'action (optionnel mais recommandé)
-    if (!isset($result['action']) || $result['action'] !== 'contact_form') {
-        logError('Action reCAPTCHA incorrecte: ' . ($result['action'] ?? 'N/A'));
+        $errorCodes = isset($result['error-codes']) ? implode(', ', $result['error-codes']) : 'Unknown';
+        logError('Échec de la validation reCAPTCHA v2: ' . $errorCodes);
         return false;
     }
 
