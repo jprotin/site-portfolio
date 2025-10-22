@@ -61,7 +61,7 @@ define('FROM_NAME', 'Portfolio Cloud Architect');
 define('SMTP_HOST', $_ENV['SMTP_HOST'] ?? 'mail.infomaniak.com');
 define('SMTP_PORT', $_ENV['SMTP_PORT'] ?? 587);
 define('SMTP_USERNAME', $_ENV['SMTP_USERNAME'] ?? '');
-define('SMTP_PASSWORD', $_ENV['SMTP_PASSWORD'] ?? '');
+define('SMTP_PASSWORD', base64_decode($_ENV['SMTP_PASSWORD']) ?? '');
 define('SMTP_ENCRYPTION', $_ENV['SMTP_ENCRYPTION'] ?? 'tls');
 
 /**
