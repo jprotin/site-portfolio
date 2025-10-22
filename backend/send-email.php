@@ -64,6 +64,10 @@ define('SMTP_USERNAME', $_ENV['SMTP_USERNAME'] ?? '');
 define('SMTP_PASSWORD', base64_decode($_ENV['SMTP_PASSWORD']) ?? '');
 define('SMTP_ENCRYPTION', $_ENV['SMTP_ENCRYPTION'] ?? 'tls');
 
+// Configuration Google reCAPTCHA v3
+define('RECAPTCHA_SECRET_KEY', $_ENV['RECAPTCHA_SECRET_KEY'] ?? '');
+define('RECAPTCHA_MINIMUM_SCORE', $_ENV['RECAPTCHA_MINIMUM_SCORE'] ?? 0.5);
+
 /**
  * Fonction pour nettoyer les données d'entrée
  */
@@ -97,11 +101,74 @@ function logError($message) {
     @file_put_contents($logFile, $logMessage, FILE_APPEND);
 }
 
+/**
+ * Fonction pour vérifier le token reCAPTCHA v3
+ */
+function verifyRecaptcha($token) {
+    if (empty(RECAPTCHA_SECRET_KEY)) {
+        logError('RECAPTCHA_SECRET_KEY n\'est pas configurée');
+        return false;
+    }
+
+    if (empty($token)) {
+        logError('Token reCAPTCHA vide');
+        return false;
+    }
+
+    // Préparer les données pour l'API Google
+    $data = [
+        'secret' => RECAPTCHA_SECRET_KEY,
+        'response' => $token,
+        'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
+    ];
+
+    // Appeler l'API Google reCAPTCHA
+    $options = [
+        'http' => [
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  => 'POST',
+            'content' => http_build_query($data),
+            'timeout' => 10
+        ]
+    ];
+
+    $context  = stream_context_create($options);
+    $response = @file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+
+    if ($response === false) {
+        logError('Échec de la connexion à l\'API reCAPTCHA');
+        return false;
+    }
+
+    $result = json_decode($response, true);
+
+    // Vérifier la réponse
+    if (!isset($result['success']) || !$result['success']) {
+        logError('Échec de la validation reCAPTCHA: ' . json_encode($result));
+        return false;
+    }
+
+    // Vérifier le score (reCAPTCHA v3 retourne un score entre 0.0 et 1.0)
+    if (!isset($result['score']) || $result['score'] < RECAPTCHA_MINIMUM_SCORE) {
+        logError('Score reCAPTCHA trop faible: ' . ($result['score'] ?? 'N/A'));
+        return false;
+    }
+
+    // Vérifier l'action (optionnel mais recommandé)
+    if (!isset($result['action']) || $result['action'] !== 'contact_form') {
+        logError('Action reCAPTCHA incorrecte: ' . ($result['action'] ?? 'N/A'));
+        return false;
+    }
+
+    return true;
+}
+
 try {
     // Récupérer les données POST
     $name = isset($_POST['name']) ? sanitizeInput($_POST['name']) : '';
     $email = isset($_POST['email']) ? sanitizeInput($_POST['email']) : '';
     $message = isset($_POST['message']) ? sanitizeInput($_POST['message']) : '';
+    $recaptchaToken = isset($_POST['recaptcha_token']) ? $_POST['recaptcha_token'] : '';
 
     // Tableau pour stocker les erreurs
     $errors = [];
@@ -140,8 +207,16 @@ try {
         exit;
     }
 
-    // Protection anti-spam simple (vérifier le temps de remplissage)
-    // En production, vous pourriez ajouter un CAPTCHA (reCAPTCHA, hCaptcha, etc.)
+    // Vérification reCAPTCHA (protection anti-bot)
+    if (!verifyRecaptcha($recaptchaToken)) {
+        http_response_code(400);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Échec de la vérification anti-bot. Veuillez réessayer.',
+            'errors' => ['La vérification de sécurité a échoué. Si le problème persiste, contactez-nous directement par email.']
+        ]);
+        exit;
+    }
 
     // Construction du sujet de l'email
     $subject = 'Nouveau message depuis le portfolio - ' . $name;
