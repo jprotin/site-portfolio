@@ -270,74 +270,67 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
+            // Get reCAPTCHA v2 token
+            const recaptchaToken = grecaptcha.getResponse();
+
+            // Check if reCAPTCHA is completed
+            if (!recaptchaToken) {
+                alert('Veuillez cocher la case "Je ne suis pas un robot".');
+                return;
+            }
+
+            // Add reCAPTCHA token to form data
+            formData.append('recaptcha_token', recaptchaToken);
+
             // Get submit button and update its state
             const submitButton = contactForm.querySelector('button[type="submit"]');
             const originalText = submitButton.textContent;
 
             submitButton.disabled = true;
             submitButton.classList.add('loading');
-            submitButton.textContent = 'Vérification anti-bot...';
+            submitButton.textContent = 'Envoi en cours...';
 
-            // Execute reCAPTCHA v3
-            grecaptcha.ready(function() {
-                grecaptcha.execute('6LevHvMrAAAAADHeXPFxxLJNzUwiENpyoYo3g7Fz', {action: 'contact_form'}).then(function(token) {
-                    // Add reCAPTCHA token to form data
-                    formData.append('recaptcha_token', token);
-
-                    // Update button text
-                    submitButton.textContent = 'Envoi en cours...';
-
-                    // Send data to PHP backend
-                    fetch('./backend/send-email.php', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().then(data => {
-                                throw new Error(data.message || 'Erreur lors de l\'envoi du message');
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Handle success
-                        submitButton.disabled = false;
-                        submitButton.classList.remove('loading');
-                        submitButton.textContent = originalText;
-
-                        if (data.success) {
-                            // Show success message
-                            alert(`Merci ${name} ! ${data.message}`);
-
-                            // Reset form
-                            contactForm.reset();
-                        } else {
-                            // Show error message
-                            const errorMsg = data.errors ? data.errors.join('\n') : data.message;
-                            alert('Erreur : ' + errorMsg);
-                        }
-                    })
-                    .catch(error => {
-                        // Handle error
-                        console.error('Erreur lors de l\'envoi du formulaire:', error);
-
-                        submitButton.disabled = false;
-                        submitButton.classList.remove('loading');
-                        submitButton.textContent = originalText;
-
-                        alert('Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer plus tard ou me contacter directement par email.');
+            // Send data to PHP backend
+            fetch('./backend/send-email.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.message || 'Erreur lors de l\'envoi du message');
                     });
-                }).catch(function(error) {
-                    // Handle reCAPTCHA error
-                    console.error('Erreur reCAPTCHA:', error);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle success
+                submitButton.disabled = false;
+                submitButton.classList.remove('loading');
+                submitButton.textContent = originalText;
 
-                    submitButton.disabled = false;
-                    submitButton.classList.remove('loading');
-                    submitButton.textContent = originalText;
+                if (data.success) {
+                    // Show success message
+                    alert(`Merci ${name} ! ${data.message}`);
 
-                    alert('Erreur de vérification anti-bot. Veuillez réessayer.');
-                });
+                    // Reset form and reCAPTCHA
+                    contactForm.reset();
+                    grecaptcha.reset();
+                } else {
+                    // Show error message
+                    const errorMsg = data.errors ? data.errors.join('\n') : data.message;
+                    alert('Erreur : ' + errorMsg);
+                }
+            })
+            .catch(error => {
+                // Handle error
+                console.error('Erreur lors de l\'envoi du formulaire:', error);
+
+                submitButton.disabled = false;
+                submitButton.classList.remove('loading');
+                submitButton.textContent = originalText;
+
+                alert('Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer plus tard ou me contacter directement par email.');
             });
         });
     }
