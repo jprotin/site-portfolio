@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.textContent = 'Envoi en cours...';
 
             // Send data to PHP backend
-            fetch('send-email.php', {
+            fetch('./backend/send-email.php', {
                 method: 'POST',
                 body: formData
             })
