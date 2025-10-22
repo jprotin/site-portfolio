@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Configuration email
 define('RECIPIENT_EMAIL', 'johan.protin@nantares.com');
 define('RECIPIENT_NAME', 'Johan Protin');
-define('FROM_EMAIL', 'noreply@cloudarchitect.fr');
-define('FROM_NAME', 'Portfolio Cloud Architect');
+define('FROM_EMAIL', 'johan.protin@nantares.com');
+define('FROM_NAME', 'Johan Protin - Nantares Consulting');
 
 /**
  * Fonction pour nettoyer les données d'entrée
