@@ -246,10 +246,59 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
 
     const contactForm = document.querySelector('#contact form');
+    let recaptchaReady = false;
+
+    // Callback appelé quand reCAPTCHA est complètement chargé
+    window.onRecaptchaLoad = function() {
+        recaptchaReady = true;
+        console.log('reCAPTCHA chargé et prêt');
+
+        // Activer le bouton submit
+        const submitButton = contactForm?.querySelector('button[type="submit"]');
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+    };
 
     if (contactForm) {
+        // Désactiver le bouton submit initialement
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        // Vérifier si grecaptcha est déjà chargé (au cas où le script se charge rapidement)
+        const checkRecaptchaInterval = setInterval(function() {
+            if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+                recaptchaReady = true;
+                clearInterval(checkRecaptchaInterval);
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+                console.log('reCAPTCHA détecté comme déjà chargé');
+            }
+        }, 100);
+
+        // Arrêter la vérification après 10 secondes
+        setTimeout(function() {
+            clearInterval(checkRecaptchaInterval);
+            if (!recaptchaReady) {
+                console.warn('reCAPTCHA n\'a pas pu être chargé après 10 secondes');
+            }
+        }, 10000);
+
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
+
+            // Vérifier que grecaptcha est disponible
+            if (typeof grecaptcha === 'undefined') {
+                alert('Le système de sécurité n\'est pas encore chargé. Veuillez patienter quelques secondes et réessayer.');
+                console.error('grecaptcha n\'est pas défini');
+                return;
+            }
 
             // Get form data
             const formData = new FormData(contactForm);
@@ -271,13 +320,22 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Get reCAPTCHA v2 token
-            const recaptchaToken = grecaptcha.getResponse();
+            let recaptchaToken;
+            try {
+                recaptchaToken = grecaptcha.getResponse();
+            } catch (error) {
+                console.error('Erreur lors de la récupération du token reCAPTCHA:', error);
+                alert('Erreur avec le système de sécurité. Veuillez recharger la page.');
+                return;
+            }
 
             // Check if reCAPTCHA is completed
-            if (!recaptchaToken) {
+            if (!recaptchaToken || recaptchaToken.length === 0) {
                 alert('Veuillez cocher la case "Je ne suis pas un robot".');
                 return;
             }
+
+            console.log('Token reCAPTCHA obtenu, longueur:', recaptchaToken.length);
 
             // Add reCAPTCHA token to form data
             formData.append('recaptcha_token', recaptchaToken);
