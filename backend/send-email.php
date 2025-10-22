@@ -2,7 +2,26 @@
 /**
  * Script d'envoi d'email pour le formulaire de contact
  * Envoie les messages à johan.protin@nantares.com
+ * Utilise PHPMailer avec SMTP Infomaniak
  */
+
+// Charger l'autoloader de Composer
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// Charger les variables d'environnement depuis .env
+$envFile = __DIR__ . '/../.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0) continue;
+        list($name, $value) = explode('=', $line, 2);
+        $_ENV[trim($name)] = trim($value);
+    }
+}
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 // Configuration des en-têtes pour les réponses JSON
 header('Content-Type: application/json; charset=utf-8');
@@ -35,8 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Configuration email
 define('RECIPIENT_EMAIL', 'johan.protin@nantares.com');
 define('RECIPIENT_NAME', 'Johan Protin');
-define('FROM_EMAIL', 'johan.protin@nantares.com');
-define('FROM_NAME', 'Johan Protin - Nantares Consulting');
+define('FROM_EMAIL', 'noreply@cloudarchitect.fr');
+define('FROM_NAME', 'Portfolio Cloud Architect');
+
+// Configuration SMTP Infomaniak
+define('SMTP_HOST', $_ENV['SMTP_HOST'] ?? 'mail.infomaniak.com');
+define('SMTP_PORT', $_ENV['SMTP_PORT'] ?? 587);
+define('SMTP_USERNAME', $_ENV['SMTP_USERNAME'] ?? '');
+define('SMTP_PASSWORD', $_ENV['SMTP_PASSWORD'] ?? '');
+define('SMTP_ENCRYPTION', $_ENV['SMTP_ENCRYPTION'] ?? 'tls');
 
 /**
  * Fonction pour nettoyer les données d'entrée
@@ -245,52 +271,59 @@ try {
     </html>
     ';
 
-    // Configuration des en-têtes de l'email
-    $headers = [];
-    $headers[] = 'MIME-Version: 1.0';
-    $headers[] = 'Content-Type: multipart/alternative; boundary="boundary-' . md5(uniqid()) . '"';
-    $headers[] = 'From: ' . FROM_NAME . ' <' . FROM_EMAIL . '>';
-    $headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
-    $headers[] = 'X-Mailer: PHP/' . phpversion();
-    $headers[] = 'X-Priority: 1';
-    $headers[] = 'Importance: High';
+    // Configuration et envoi de l'email avec PHPMailer
+    $mail = new PHPMailer(true);
 
-    // Construction du message multipart (texte + HTML)
-    $boundary = 'boundary-' . md5(uniqid());
+    try {
+        // Configuration du serveur SMTP
+        $mail->isSMTP();
+        $mail->Host       = SMTP_HOST;
+        $mail->SMTPAuth   = true;
+        $mail->Username   = SMTP_USERNAME;
+        $mail->Password   = SMTP_PASSWORD;
+        $mail->SMTPSecure = SMTP_ENCRYPTION;
+        $mail->Port       = SMTP_PORT;
+        $mail->CharSet    = 'UTF-8';
+        $mail->Encoding   = 'base64';
 
-    $fullMessage = "--$boundary\n";
-    $fullMessage .= "Content-Type: text/plain; charset=UTF-8\n";
-    $fullMessage .= "Content-Transfer-Encoding: 8bit\n\n";
-    $fullMessage .= $bodyText . "\n\n";
-    $fullMessage .= "--$boundary\n";
-    $fullMessage .= "Content-Type: text/html; charset=UTF-8\n";
-    $fullMessage .= "Content-Transfer-Encoding: 8bit\n\n";
-    $fullMessage .= $bodyHtml . "\n\n";
-    $fullMessage .= "--$boundary--";
+        // Mode debug pour le développement (à désactiver en production)
+        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
 
-    // Envoi de l'email
-    $mailSent = mail(
-        RECIPIENT_EMAIL,
-        $subject,
-        $fullMessage,
-        implode("\r\n", $headers)
-    );
+        // Destinataires
+        $mail->setFrom(FROM_EMAIL, FROM_NAME);
+        $mail->addAddress(RECIPIENT_EMAIL, RECIPIENT_NAME);
+        $mail->addReplyTo($email, $name);
 
-    if ($mailSent) {
+        // Contenu de l'email
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body    = $bodyHtml;
+        $mail->AltBody = $bodyText;
+
+        // Priorité haute
+        $mail->Priority = 1;
+        $mail->addCustomHeader('X-Priority', '1');
+        $mail->addCustomHeader('Importance', 'High');
+
+        // Envoi de l'email
+        $mail->send();
+
         // Succès
         http_response_code(200);
         echo json_encode([
             'success' => true,
             'message' => 'Votre message a été envoyé avec succès ! Je vous répondrai dans les plus brefs délais.'
         ]);
-    } else {
+
+    } catch (Exception $e) {
         // Échec de l'envoi
-        logError("Échec de l'envoi de l'email à " . RECIPIENT_EMAIL);
+        logError("Échec de l'envoi de l'email à " . RECIPIENT_EMAIL . ": {$mail->ErrorInfo}");
 
         http_response_code(500);
         echo json_encode([
             'success' => false,
-            'message' => "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer plus tard ou me contacter directement."
+            'message' => "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer plus tard ou me contacter directement.",
+            'error_details' => $mail->ErrorInfo // À retirer en production
         ]);
     }
 
