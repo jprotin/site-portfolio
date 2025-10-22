@@ -247,17 +247,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const contactForm = document.querySelector('#contact form');
     let recaptchaReady = false;
+    let recaptchaWidgetId = null;
 
     // Callback appelé quand reCAPTCHA est complètement chargé
     window.onRecaptchaLoad = function() {
-        recaptchaReady = true;
-        console.log('reCAPTCHA chargé et prêt');
+        console.log('API reCAPTCHA chargée, rendu du widget...');
 
-        // Activer le bouton submit
-        const submitButton = contactForm?.querySelector('button[type="submit"]');
-        if (submitButton) {
-            submitButton.disabled = false;
-            submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        // Trouver la div reCAPTCHA
+        const recaptchaContainer = document.querySelector('.g-recaptcha');
+
+        if (recaptchaContainer) {
+            // Récupérer la sitekey depuis l'attribut data-sitekey
+            const sitekey = recaptchaContainer.getAttribute('data-sitekey');
+
+            try {
+                // Rendre le widget explicitement
+                recaptchaWidgetId = grecaptcha.render(recaptchaContainer, {
+                    'sitekey': sitekey,
+                    'callback': function(response) {
+                        console.log('reCAPTCHA validé, token reçu');
+                    },
+                    'expired-callback': function() {
+                        console.warn('reCAPTCHA expiré, veuillez revalider');
+                    },
+                    'error-callback': function() {
+                        console.error('Erreur reCAPTCHA');
+                    }
+                });
+
+                recaptchaReady = true;
+                console.log('Widget reCAPTCHA rendu avec succès, ID:', recaptchaWidgetId);
+
+                // Activer le bouton submit
+                const submitButton = contactForm?.querySelector('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            } catch (error) {
+                console.error('Erreur lors du rendu du widget reCAPTCHA:', error);
+            }
+        } else {
+            console.error('Conteneur reCAPTCHA (.g-recaptcha) non trouvé');
         }
     };
 
@@ -268,27 +299,6 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.disabled = true;
             submitButton.classList.add('opacity-50', 'cursor-not-allowed');
         }
-
-        // Vérifier si grecaptcha est déjà chargé (au cas où le script se charge rapidement)
-        const checkRecaptchaInterval = setInterval(function() {
-            if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
-                recaptchaReady = true;
-                clearInterval(checkRecaptchaInterval);
-                if (submitButton) {
-                    submitButton.disabled = false;
-                    submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
-                }
-                console.log('reCAPTCHA détecté comme déjà chargé');
-            }
-        }, 100);
-
-        // Arrêter la vérification après 10 secondes
-        setTimeout(function() {
-            clearInterval(checkRecaptchaInterval);
-            if (!recaptchaReady) {
-                console.warn('reCAPTCHA n\'a pas pu être chargé après 10 secondes');
-            }
-        }, 10000);
 
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -373,7 +383,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // Reset form and reCAPTCHA
                     contactForm.reset();
-                    grecaptcha.reset();
+                    if (recaptchaWidgetId !== null) {
+                        grecaptcha.reset(recaptchaWidgetId);
+                    } else {
+                        grecaptcha.reset();
+                    }
                 } else {
                     // Show error message
                     const errorMsg = data.errors ? data.errors.join('\n') : data.message;
