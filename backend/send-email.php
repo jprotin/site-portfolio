@@ -104,13 +104,17 @@ function logError($message) {
  * Fonction pour vérifier le token reCAPTCHA v2
  */
 function verifyRecaptcha($token) {
-    if (empty(RECAPTCHA_SECRET_KEY)) {
-        logError('RECAPTCHA_SECRET_KEY n\'est pas configurée');
+    // Log pour debugging
+    logError('Début vérification reCAPTCHA - Token reçu: ' . (empty($token) ? 'VIDE' : 'présent (' . strlen($token) . ' caractères)'));
+    logError('RECAPTCHA_SECRET_KEY configurée: ' . (empty(RECAPTCHA_SECRET_KEY) ? 'NON' : 'OUI (' . strlen(RECAPTCHA_SECRET_KEY) . ' caractères)'));
+
+    if (empty(RECAPTCHA_SECRET_KEY) || RECAPTCHA_SECRET_KEY === 'votre-cle-secrete-recaptcha') {
+        logError('RECAPTCHA_SECRET_KEY n\'est pas configurée ou utilise la valeur par défaut');
         return false;
     }
 
     if (empty($token)) {
-        logError('Token reCAPTCHA vide');
+        logError('Token reCAPTCHA vide - Le widget reCAPTCHA n\'a peut-être pas été validé');
         return false;
     }
 
@@ -120,6 +124,8 @@ function verifyRecaptcha($token) {
         'response' => $token,
         'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
     ];
+
+    logError('Appel API reCAPTCHA avec IP: ' . ($data['remoteip'] ?? 'non définie'));
 
     // Appeler l'API Google reCAPTCHA
     $options = [
@@ -135,28 +141,41 @@ function verifyRecaptcha($token) {
     $response = @file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
 
     if ($response === false) {
-        logError('Échec de la connexion à l\'API reCAPTCHA');
+        logError('Échec de la connexion à l\'API reCAPTCHA - Vérifiez la connectivité réseau');
         return false;
     }
+
+    logError('Réponse brute de l\'API reCAPTCHA: ' . $response);
 
     $result = json_decode($response, true);
 
     // Vérifier la réponse (reCAPTCHA v2)
     if (!isset($result['success']) || !$result['success']) {
         $errorCodes = isset($result['error-codes']) ? implode(', ', $result['error-codes']) : 'Unknown';
-        logError('Échec de la validation reCAPTCHA v2: ' . $errorCodes);
+        logError('Échec de la validation reCAPTCHA v2 - Codes d\'erreur: ' . $errorCodes);
+        logError('Réponse complète: ' . json_encode($result));
         return false;
     }
 
+    logError('Validation reCAPTCHA réussie!');
     return true;
 }
 
 try {
+    // Log des données reçues pour debugging
+    logError('=== Nouvelle requête reçue ===');
+    logError('Méthode: ' . $_SERVER['REQUEST_METHOD']);
+    logError('Content-Type: ' . ($_SERVER['CONTENT_TYPE'] ?? 'non défini'));
+    logError('POST data keys: ' . implode(', ', array_keys($_POST)));
+    logError('POST recaptcha_token présent: ' . (isset($_POST['recaptcha_token']) ? 'OUI' : 'NON'));
+
     // Récupérer les données POST
     $name = isset($_POST['name']) ? sanitizeInput($_POST['name']) : '';
     $email = isset($_POST['email']) ? sanitizeInput($_POST['email']) : '';
     $message = isset($_POST['message']) ? sanitizeInput($_POST['message']) : '';
     $recaptchaToken = isset($_POST['recaptcha_token']) ? $_POST['recaptcha_token'] : '';
+
+    logError('Données extraites - Name: ' . (!empty($name) ? 'présent' : 'vide') . ', Email: ' . (!empty($email) ? 'présent' : 'vide') . ', Message: ' . (!empty($message) ? 'présent' : 'vide') . ', Token: ' . (!empty($recaptchaToken) ? 'présent' : 'vide'));
 
     // Tableau pour stocker les erreurs
     $errors = [];
