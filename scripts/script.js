@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Execute reCAPTCHA v3
             grecaptcha.ready(function() {
-                grecaptcha.execute('YOUR_RECAPTCHA_SITE_KEY', {action: 'contact_form'}).then(function(token) {
+                grecaptcha.execute('6LevHvMrAAAAADHeXPFxxLJNzUwiENpyoYo3g7Fz', {action: 'contact_form'}).then(function(token) {
                     // Add reCAPTCHA token to form data
                     formData.append('recaptcha_token', token);
 
