@@ -449,6 +449,40 @@ img.loaded {
     }
 }
 
+/* reCAPTCHA Mobile Responsive Styles */
+.recaptcha-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Desktop: reCAPTCHA normal size */
+.g-recaptcha {
+    display: inline-block;
+}
+
+/* Mobile: Scale down reCAPTCHA for small screens */
+@media (max-width: 380px) {
+    .recaptcha-wrapper {
+        transform: scale(0.85);
+        transform-origin: 0 0;
+        width: 100%;
+    }
+
+    .g-recaptcha {
+        margin: 0 auto;
+    }
+}
+
+/* Very small screens: Further scale down */
+@media (max-width: 320px) {
+    .recaptcha-wrapper {
+        transform: scale(0.75);
+        transform-origin: 0 0;
+    }
+}
+
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
     *,
