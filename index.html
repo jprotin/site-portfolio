@@ -677,6 +677,649 @@
         </div>
     </div>
 
+    <!-- Chatbot FAQ -->
+    <style>
+        /* Chatbot Styles */
+        .chatbot-button {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f89576 0%, #5fa9c0 100%);
+            box-shadow: 0 4px 20px rgba(248, 149, 118, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(248, 149, 118, 0.6);
+        }
+
+        .chatbot-button svg {
+            width: 28px;
+            height: 28px;
+            color: white;
+        }
+
+        .chatbot-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: none;
+            animation: chatbot-pulse 2s infinite;
+        }
+
+        .chatbot-badge.active {
+            display: block;
+        }
+
+        @keyframes chatbot-pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            width: 380px;
+            height: 550px;
+            background: rgba(255, 252, 243, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 1500;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: chatbot-slide-in 0.3s ease;
+        }
+
+        .chatbot-window.active {
+            display: flex;
+        }
+
+        @keyframes chatbot-slide-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #f89576 0%, #5fa9c0 100%);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+        }
+
+        .chatbot-header-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chatbot-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .chatbot-status {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbot-status-name {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .chatbot-status-online {
+            font-size: 12px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chatbot-status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        .chatbot-close {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .chatbot-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .chatbot-close svg {
+            width: 16px;
+            height: 16px;
+            color: white;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-thumb {
+            background: #5fa9c0;
+            border-radius: 3px;
+        }
+
+        .chatbot-message {
+            display: flex;
+            gap: 12px;
+            animation: chatbot-message-slide 0.3s ease;
+        }
+
+        @keyframes chatbot-message-slide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chatbot-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .chatbot-message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .chatbot-message.bot .chatbot-message-avatar {
+            background: linear-gradient(135deg, #5fa9c0 0%, #92a2a7 100%);
+        }
+
+        .chatbot-message.user .chatbot-message-avatar {
+            background: linear-gradient(135deg, #f89576 0%, #c59c8f 100%);
+        }
+
+        .chatbot-message-content {
+            max-width: 75%;
+        }
+
+        .chatbot-message-bubble {
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .chatbot-message.bot .chatbot-message-bubble {
+            background: white;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .chatbot-message.user .chatbot-message-bubble {
+            background: linear-gradient(135deg, #f89576 0%, #5fa9c0 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+            margin-left: auto;
+        }
+
+        .chatbot-typing {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 16px;
+            border-bottom-left-radius: 4px;
+            width: fit-content;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .chatbot-typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #5fa9c0;
+            border-radius: 50%;
+            animation: chatbot-typing-animation 1.4s infinite;
+        }
+
+        .chatbot-typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .chatbot-typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes chatbot-typing-animation {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .chatbot-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .chatbot-suggestion {
+            padding: 8px 14px;
+            background: white;
+            border: 1px solid #5fa9c0;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .chatbot-suggestion:hover {
+            background: #5fa9c0;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .chatbot-input-container {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(95, 169, 192, 0.2);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid rgba(95, 169, 192, 0.3);
+            border-radius: 24px;
+            outline: none;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            transition: border-color 0.2s ease;
+        }
+
+        .chatbot-input:focus {
+            border-color: #5fa9c0;
+        }
+
+        .chatbot-send {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f89576 0%, #5fa9c0 100%);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .chatbot-send:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-send svg {
+            width: 20px;
+            height: 20px;
+            color: white;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 480px) {
+            .chatbot-window {
+                width: calc(100vw - 32px);
+                height: calc(100vh - 140px);
+                right: 16px;
+                bottom: 90px;
+            }
+
+            .chatbot-button {
+                right: 16px;
+                bottom: 16px;
+            }
+        }
+    </style>
+
+    <!-- Chatbot HTML -->
+    <div id="chatbot-container">
+        <!-- Chatbot Button -->
+        <button class="chatbot-button" id="chatbot-toggle" aria-label="Ouvrir le chatbot">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+            </svg>
+            <span class="chatbot-badge" id="chatbot-badge"></span>
+        </button>
+
+        <!-- Chatbot Window -->
+        <div class="chatbot-window" id="chatbot-window">
+            <!-- Header -->
+            <div class="chatbot-header">
+                <div class="chatbot-header-info">
+                    <div class="chatbot-avatar">🤖</div>
+                    <div class="chatbot-status">
+                        <div class="chatbot-status-name">Assistant Cloud</div>
+                        <div class="chatbot-status-online">
+                            <span class="chatbot-status-dot"></span>
+                            En ligne
+                        </div>
+                    </div>
+                </div>
+                <button class="chatbot-close" id="chatbot-close" aria-label="Fermer le chatbot">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Messages -->
+            <div class="chatbot-messages" id="chatbot-messages"></div>
+
+            <!-- Input -->
+            <div class="chatbot-input-container">
+                <input type="text" class="chatbot-input" id="chatbot-input" placeholder="Posez votre question..." aria-label="Message du chatbot">
+                <button class="chatbot-send" id="chatbot-send" aria-label="Envoyer le message">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot JavaScript -->
+    <script>
+        // Chatbot Knowledge Base - Keywords by category
+        const chatbotKnowledge = {
+            greeting: ['bonjour', 'salut', 'hello', 'hi', 'hey', 'bonsoir', 'coucou'],
+            services: ['services', 'proposez', 'offre', 'offres', 'que faites-vous', 'que fais-tu', 'compétences', 'expertise'],
+            cloud: ['cloud', 'architecture', 'aws', 'azure', 'gcp', 'google cloud', 'scalable', 'terraform', 'kubernetes', 'docker', 'infrastructure'],
+            finops: ['finops', 'coûts', 'cout', 'économies', 'économie', 'optimisation', 'budget', 'réduction', 'tarification', 'prix cloud', 'facture'],
+            transformation: ['transformation', 'migration', 'move-to-cloud', 'move to cloud', 'migrer', 'déploiement', 'méthodologie', 'stratégie'],
+            experience: ['expérience', 'parcours', 'certifications', 'certifié', 'années', 'projets', 'compétences', 'cv'],
+            contact: ['contact', 'contacter', 'email', 'mail', 'joindre', 'appel', 'rendez-vous', 'rdv', 'parler', 'discuter'],
+            tarifs: ['tarifs', 'prix', 'coût', 'devis', 'facturation', 'combien', 'forfait', 'budget projet'],
+            disponibilite: ['disponibilité', 'disponible', 'délai', 'quand', 'démarrage', 'commencer', 'début'],
+        };
+
+        // Chatbot Responses
+        const chatbotResponses = {
+            greeting: {
+                text: "Bonjour ! 👋\n\nJe suis l'assistant virtuel de votre Cloud Solution Architect.\n\nComment puis-je vous aider aujourd'hui ?",
+                suggestions: ["Quels sont vos services ?", "Parlez-moi de FinOps", "Comment vous contacter ?"]
+            },
+            services: {
+                text: "Je propose 3 services principaux pour accompagner votre transformation cloud :\n\n☁️ Cloud Architecture\nConception d'architectures cloud scalables et sécurisées sur AWS, Azure et GCP\n\n💰 FinOps\nOptimisation des coûts cloud avec réduction moyenne de 30% de vos dépenses\n\n🚀 Transformation Digitale\nAccompagnement complet dans votre migration move-to-cloud",
+                suggestions: ["Cloud Architecture", "FinOps", "Transformation Digitale"]
+            },
+            cloud: {
+                text: "🏗️ Cloud Architecture :\n\nJe conçois des solutions cloud robustes et évolutives :\n\n• Architectures multi-cloud (AWS, Azure, GCP)\n• Solutions scalables et hautement disponibles\n• Infrastructure as Code (Terraform)\n• Conteneurisation (Kubernetes, Docker)\n• Sécurité et conformité\n• Well-Architected Reviews",
+                suggestions: ["FinOps", "Transformation Digitale", "Voir mes réalisations"]
+            },
+            finops: {
+                text: "💰 FinOps & Optimisation des Coûts :\n\nRéduisez vos dépenses cloud de 30 à 40% :\n\n• Audit complet de vos ressources cloud\n• Right-sizing des instances\n• Reserved Instances & Savings Plans\n• Identification des ressources orphelines\n• Dashboards de suivi des coûts\n• Formation des équipes\n\n🎁 Audit gratuit pour évaluer votre potentiel d'économies !",
+                suggestions: ["Demander un audit gratuit", "Exemples de résultats", "Me contacter"]
+            },
+            transformation: {
+                text: "🚀 Move-to-Cloud & Transformation Digitale :\n\nMéthodologie éprouvée en 6 étapes :\n\n1️⃣ Assessment - Audit de l'existant\n2️⃣ Stratégie - Plan de migration\n3️⃣ PoC - Validation de l'approche\n4️⃣ Migration - Exécution par vagues\n5️⃣ Optimisation - Performance & coûts\n6️⃣ Run - Exploitation opérationnelle\n\nApproche pragmatique avec gestion des risques à chaque étape.",
+                suggestions: ["Cloud Architecture", "FinOps", "Voir mes réalisations"]
+            },
+            experience: {
+                text: "👨‍💻 Mon Expertise :\n\n• 10+ années d'expérience infrastructure IT\n• 6 ans spécialisé Cloud\n• 50+ projets cloud réussis\n\n🎓 Certifications :\n• AWS Solutions Architect Professional\n• Azure Solutions Architect Expert\n• Google Cloud Professional Architect\n• FinOps Certified Practitioner\n• Terraform Associate",
+                suggestions: ["Voir mes réalisations", "Mes services", "Me contacter"]
+            },
+            contact: {
+                text: "📞 Contactez-moi :\n\n📧 Email : johan.protin@nantares.com\n💼 LinkedIn : Johan Protin\n📍 Localisation : Nantes, France (Remote OK)\n\n💡 Je propose un appel découverte gratuit de 30 minutes pour discuter de votre projet.\n\n⏱️ Réponse garantie sous 24h !",
+                suggestions: ["Demander un audit gratuit", "Voir mes tarifs", "Mes disponibilités"]
+            },
+            tarifs: {
+                text: "💼 Tarification :\n\nMes tarifs sont adaptés à chaque projet selon :\n• La complexité technique\n• La durée de la mission\n• Le niveau d'accompagnement souhaité\n\n🎁 Audit FinOps gratuit (valeur 2000€)\n\n💰 Modes de facturation :\n• Forfait projet\n• Régie au TJM\n• Success fee (pour optimisation FinOps)\n\nContactez-moi pour un devis personnalisé !",
+                suggestions: ["Demander un devis", "Audit gratuit", "Me contacter"]
+            },
+            disponibilite: {
+                text: "📅 Disponibilités :\n\n• Démarrage d'un nouveau projet : 2-4 semaines\n• Audit FinOps gratuit : disponible dès cette semaine\n• Appel découverte : sous 48h\n\n⚡ Pour les urgences, des créneaux peuvent être libérés plus rapidement.\n\nContactez-moi pour discuter de votre calendrier !",
+                suggestions: ["Demander un audit", "Prendre RDV", "Me contacter"]
+            },
+            default: {
+                text: "Je ne suis pas sûr d'avoir bien compris votre question. 🤔\n\nVoici ce que je peux vous expliquer :\n\n• Mes services (Cloud, FinOps, Transformation)\n• Mon expérience et mes certifications\n• Comment me contacter\n• Mes tarifs et disponibilités\n\nN'hésitez pas à reformuler ou à choisir une suggestion !",
+                suggestions: ["Quels sont vos services ?", "Parlez-moi de FinOps", "Comment vous contacter ?"]
+            }
+        };
+
+        // Global variables
+        let chatbotOpen = false;
+        let messageCount = 0;
+
+        // Initialize chatbot
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show badge after 3 seconds
+            setTimeout(() => {
+                document.getElementById('chatbot-badge').classList.add('active');
+            }, 3000);
+
+            // Toggle chatbot
+            document.getElementById('chatbot-toggle').addEventListener('click', toggleChatbot);
+            document.getElementById('chatbot-close').addEventListener('click', toggleChatbot);
+
+            // Send message
+            document.getElementById('chatbot-send').addEventListener('click', sendMessage);
+            document.getElementById('chatbot-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // Close on outside click
+            document.getElementById('chatbot-window').addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            document.addEventListener('click', function(e) {
+                if (chatbotOpen && !e.target.closest('#chatbot-container')) {
+                    toggleChatbot();
+                }
+            });
+        });
+
+        function toggleChatbot() {
+            chatbotOpen = !chatbotOpen;
+            const window = document.getElementById('chatbot-window');
+            const badge = document.getElementById('chatbot-badge');
+
+            if (chatbotOpen) {
+                window.classList.add('active');
+                badge.classList.remove('active');
+
+                // Show welcome message on first open
+                if (messageCount === 0) {
+                    setTimeout(() => {
+                        addBotMessage(chatbotResponses.greeting.text, chatbotResponses.greeting.suggestions);
+                    }, 500);
+                }
+            } else {
+                window.classList.remove('active');
+            }
+        }
+
+        function addUserMessage(text) {
+            const messagesContainer = document.getElementById('chatbot-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chatbot-message user';
+            messageDiv.innerHTML = `
+                <div class="chatbot-message-avatar">👤</div>
+                <div class="chatbot-message-content">
+                    <div class="chatbot-message-bubble">${text}</div>
+                </div>
+            `;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            messageCount++;
+        }
+
+        function addBotMessage(text, suggestions = []) {
+            const messagesContainer = document.getElementById('chatbot-messages');
+
+            // Add typing indicator
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'chatbot-message bot';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="chatbot-message-avatar">🤖</div>
+                <div class="chatbot-message-content">
+                    <div class="chatbot-typing">
+                        <div class="chatbot-typing-dot"></div>
+                        <div class="chatbot-typing-dot"></div>
+                        <div class="chatbot-typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Remove typing indicator and show message after 1 second
+            setTimeout(() => {
+                const typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chatbot-message bot';
+
+                let suggestionsHtml = '';
+                if (suggestions.length > 0) {
+                    suggestionsHtml = '<div class="chatbot-suggestions">';
+                    suggestions.forEach(suggestion => {
+                        suggestionsHtml += `<button class="chatbot-suggestion" onclick="handleSuggestion('${suggestion.replace(/'/g, "\\'")}')">${suggestion}</button>`;
+                    });
+                    suggestionsHtml += '</div>';
+                }
+
+                messageDiv.innerHTML = `
+                    <div class="chatbot-message-avatar">🤖</div>
+                    <div class="chatbot-message-content">
+                        <div class="chatbot-message-bubble">${text.replace(/\n/g, '<br>')}</div>
+                        ${suggestionsHtml}
+                    </div>
+                `;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                messageCount++;
+            }, 1000);
+        }
+
+        function analyzeMessage(message) {
+            const lowerMessage = message.toLowerCase().trim();
+
+            // Check each category for matching keywords
+            for (const [category, keywords] of Object.entries(chatbotKnowledge)) {
+                for (const keyword of keywords) {
+                    if (lowerMessage.includes(keyword)) {
+                        return category;
+                    }
+                }
+            }
+
+            return 'default';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatbot-input');
+            const message = input.value.trim();
+
+            if (message === '') return;
+
+            // Add user message
+            addUserMessage(message);
+            input.value = '';
+
+            // Analyze message and get response
+            const category = analyzeMessage(message);
+            const response = chatbotResponses[category];
+
+            // Add bot response
+            addBotMessage(response.text, response.suggestions);
+        }
+
+        function handleSuggestion(suggestion) {
+            const input = document.getElementById('chatbot-input');
+            input.value = suggestion;
+            sendMessage();
+        }
+    </script>
+
     <!-- JavaScript -->
     <script src="scripts/script.js"></script>
 </body>
