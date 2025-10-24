@@ -1107,55 +1107,55 @@
         const chatbotKnowledge = {
             greeting: ['bonjour', 'salut', 'hello', 'hi', 'hey', 'bonsoir', 'coucou'],
             services: ['services', 'proposez', 'offre', 'offres', 'que faites-vous', 'que fais-tu', 'compétences', 'expertise'],
-            cloud: ['cloud', 'architecture', 'aws', 'azure', 'gcp', 'google cloud', 'scalable', 'terraform', 'kubernetes', 'docker', 'infrastructure'],
-            finops: ['finops', 'coûts', 'cout', 'économies', 'économie', 'optimisation', 'budget', 'réduction', 'tarification', 'prix cloud', 'facture'],
-            transformation: ['transformation', 'migration', 'move-to-cloud', 'move to cloud', 'migrer', 'déploiement', 'méthodologie', 'stratégie'],
+            cloud: ['cloud', 'architecture','architecture si','architecture applicative', 'ovh', 'ovhcloud', 'aws', 'azure', 'gcp', 'google cloud', 'scalable', 'scalabilité', 'serverless', 'faas','caas', 'terraform', 'kubernetes', 'docker', 'infrastructure','cloud souverain', 'souvraineté'],
+            finops: ['finops', 'coûts', 'cout', 'économies', 'économie', 'optimisation', 'budget', 'réduction', 'tarification', 'prix cloud', 'facture','maîtriser', 'saving plans','cud','sud'],
+            transformation: ['transformation', 'migration', 'move-to-cloud', 'move to cloud', 'migrer', 'déploiement', 'méthodologie', 'stratégie','conduite du changement','ccoe','coud center of excellence', 'pra', 'drp', 'pca', 'plan de reprise d\'acitvité', 'disaster recovery plan'],
             experience: ['expérience', 'parcours', 'certifications', 'certifié', 'années', 'projets', 'compétences', 'cv'],
             contact: ['contact', 'contacter', 'email', 'mail', 'joindre', 'appel', 'rendez-vous', 'rdv', 'parler', 'discuter'],
-            tarifs: ['tarifs', 'prix', 'coût', 'devis', 'facturation', 'combien', 'forfait', 'budget projet'],
+            tarifs: ['tarifs', 'prix', 'coût', 'devis', 'facturation', 'combien', 'forfait', 'budget projet','tjm'],
             disponibilite: ['disponibilité', 'disponible', 'délai', 'quand', 'démarrage', 'commencer', 'début'],
         };
 
         // Chatbot Responses
         const chatbotResponses = {
             greeting: {
-                text: "Bonjour ! 👋\n\nJe suis l'assistant virtuel de votre Cloud Solution Architect.\n\nComment puis-je vous aider aujourd'hui ?",
-                suggestions: ["Quels sont vos services ?", "Parlez-moi de FinOps", "Comment vous contacter ?"]
+                text: "Bonjour ! 👋\n\nJe suis l'assistant virtuel de Johan.\n\nComment puis-je vous aider aujourd'hui ?",
+                suggestions: ["Quels sont vos services ?", "Parlez-moi de FinOps", "Comment vous contacter ?", "Combien est votre TJM ?"]
             },
             services: {
-                text: "Je propose 3 services principaux pour accompagner votre transformation cloud :\n\n☁️ Cloud Architecture\nConception d'architectures cloud scalables et sécurisées sur AWS, Azure et GCP\n\n💰 FinOps\nOptimisation des coûts cloud avec réduction moyenne de 30% de vos dépenses\n\n🚀 Transformation Digitale\nAccompagnement complet dans votre migration move-to-cloud",
-                suggestions: ["Cloud Architecture", "FinOps", "Transformation Digitale"]
+                text: "Je propose 3 compétences principales pour accompagner en tant que Solution Architect, expert Cloud / FinOps et accompagnement sur la transformation digitale :\n\n☁️ Architecture\nConception d'architectures cloud scalables et sécurisées sur Google Cloud et quelques autres Cloud Providers\n\n💰 FinOps\nOptimisation des coûts cloud pour vous aider à maîtriser vos dépenses et si possible de les réduire.\n\n🚀 Transformation et modernisation\nAccompagnement dans la conduite du changement au sein de votre organisation, accompagnement avec vos équipes techs pour les aider à moderniser les applications sur du Cloud native",
+                suggestions: ["Cloud Architecture", "FinOps", "Transformation et modernisation"]
             },
             cloud: {
-                text: "🏗️ Cloud Architecture :\n\nJe conçois des solutions cloud robustes et évolutives :\n\n• Architectures multi-cloud (AWS, Azure, GCP)\n• Solutions scalables et hautement disponibles\n• Infrastructure as Code (Terraform)\n• Conteneurisation (Kubernetes, Docker)\n• Sécurité et conformité\n• Well-Architected Reviews",
-                suggestions: ["FinOps", "Transformation Digitale", "Voir mes réalisations"]
+                text: "🏗️ Cloud Architecture :\n\nJe propose des solutions cloud robustes et évolutives :\n\n• Architectures multi-cloud (AWS, OVHcloud, Google Cloud)\n• Solutions scalables et hautement disponibles\n• Infrastructure as Code (Terraform)\n• Conteneurisation (Kubernetes, Docker)\n• Sécurité et conformité\n• Observabilité",
+                suggestions: ["FinOps", "Transformation Digitale","Architecture Serverless"]
             },
             finops: {
-                text: "💰 FinOps & Optimisation des Coûts :\n\nRéduisez vos dépenses cloud de 30 à 40% :\n\n• Audit complet de vos ressources cloud\n• Right-sizing des instances\n• Reserved Instances & Savings Plans\n• Identification des ressources orphelines\n• Dashboards de suivi des coûts\n• Formation des équipes\n\n🎁 Audit gratuit pour évaluer votre potentiel d'économies !",
-                suggestions: ["Demander un audit gratuit", "Exemples de résultats", "Me contacter"]
+                text: "💰 FinOps & Optimisation des Coûts :\n\nMaîtrisez vos dépenses cloud :\n\n• Audit complet de vos ressources cloud\n• Right-sizing des instances\n• Reserved Instances & Savings Plans\n• Identification des ressources orphelines\n• Dashboards de suivi des coûts\n• Formation des équipes\n\n🎁 Audit pour évaluer votre potentiel d'économies !",
+                suggestions: ["Vous souhaitez un audit ?", "Me contacter pour un devis ?"]
             },
             transformation: {
-                text: "🚀 Move-to-Cloud & Transformation Digitale :\n\nMéthodologie éprouvée en 6 étapes :\n\n1️⃣ Assessment - Audit de l'existant\n2️⃣ Stratégie - Plan de migration\n3️⃣ PoC - Validation de l'approche\n4️⃣ Migration - Exécution par vagues\n5️⃣ Optimisation - Performance & coûts\n6️⃣ Run - Exploitation opérationnelle\n\nApproche pragmatique avec gestion des risques à chaque étape.",
-                suggestions: ["Cloud Architecture", "FinOps", "Voir mes réalisations"]
+                text: "🚀 Move-to-Cloud & Transformation Digitale :\n\nMéthodologie éprouvée en 6 étapes :\n\n1️⃣ Assessment - Audit de l'existant avec la restitution du business case comprenant la stratégie/plan de migration, les coûts, la roadmap et les ressources en compétences nécessaires\n2️⃣ On met en place les fondations : \n\n Landing Zone, Observabilité, Sécurité, Réseau, expérience de delivery, migration de projets pilotes\n3️⃣ Validation des fondations\n\nDéfinition du cutover, la stratégie du PRA / DRP4️⃣ Migration du reste de l'infrastructure et applications\n5️⃣ Optimisation - Performance & coûts\n6️⃣ Run - Exploitation opérationnelle\n\nApproche pragmatique avec gestion des risques à chaque étape.",
+                suggestions: ["Cloud Architecture", "FinOps", "Programme d'accélération de la migration","Modernisation", "Move-To-Cloud", "PRA / DRP"]
             },
             experience: {
-                text: "👨‍💻 Mon Expertise :\n\n• 10+ années d'expérience infrastructure IT\n• 6 ans spécialisé Cloud\n• 50+ projets cloud réussis\n\n🎓 Certifications :\n• AWS Solutions Architect Professional\n• Azure Solutions Architect Expert\n• Google Cloud Professional Architect\n• FinOps Certified Practitioner\n• Terraform Associate",
-                suggestions: ["Voir mes réalisations", "Mes services", "Me contacter"]
+                text: "👨‍💻 Mon Expertise :\n\n• 20+ années d'expérience dans l'IT\n• 10 ans spécialisé Cloud\n• Des dizaines de projets cloud réussis\n\n🎓 Certifications :\n• Google Cloud Professional Architect et Authorized Trainer (formateur officiel Google Cloud)",
+                suggestions: ["Mes services", "Me contacter"]
             },
             contact: {
-                text: "📞 Contactez-moi :\n\n📧 Email : johan.protin@nantares.com\n💼 LinkedIn : Johan Protin\n📍 Localisation : Nantes, France (Remote OK)\n\n💡 Je propose un appel découverte gratuit de 30 minutes pour discuter de votre projet.\n\n⏱️ Réponse garantie sous 24h !",
-                suggestions: ["Demander un audit gratuit", "Voir mes tarifs", "Mes disponibilités"]
+                text: "📞 Contactez-moi :\n\n📧 Email : johan.protin@nantares.com\n💼 LinkedIn : Johan Protin\n📍 Localisation : Nantes, France (Remote OK)\n\n💡 Disponible sur rendez-vous pour discuter de votre projet.\n\n⏱️ Réponse garantie sous 24h !",
+                suggestions: ["Proposer une mission","Prendre RDV", "Mes disponibilités"]
             },
             tarifs: {
-                text: "💼 Tarification :\n\nMes tarifs sont adaptés à chaque projet selon :\n• La complexité technique\n• La durée de la mission\n• Le niveau d'accompagnement souhaité\n\n🎁 Audit FinOps gratuit (valeur 2000€)\n\n💰 Modes de facturation :\n• Forfait projet\n• Régie au TJM\n• Success fee (pour optimisation FinOps)\n\nContactez-moi pour un devis personnalisé !",
-                suggestions: ["Demander un devis", "Audit gratuit", "Me contacter"]
+                text: "💼 Tarification :\n\nMes tarifs sont adaptés à chaque projet selon :\n• La complexité technique\n• La durée de la mission\n• Le niveau d'accompagnement souhaité\n\n💰 Modes de facturation :\n• Forfait projet\n• Régie au TJM\n\nContactez-moi pour un devis personnalisé !",
+                suggestions: ["Demander un devis", "Audit FinOps","Audit Technique", "Me contacter"]
             },
             disponibilite: {
-                text: "📅 Disponibilités :\n\n• Démarrage d'un nouveau projet : 2-4 semaines\n• Audit FinOps gratuit : disponible dès cette semaine\n• Appel découverte : sous 48h\n\n⚡ Pour les urgences, des créneaux peuvent être libérés plus rapidement.\n\nContactez-moi pour discuter de votre calendrier !",
+                text: "📅 Disponibilités :\n\n• Démarrage d'un nouveau projet : à partir de janvier 2026\n• Appel découverte : sous 48h\n\n⚡ Pour les urgences, des créneaux peuvent être libérés plus rapidement.\n\nContactez-moi pour discuter de votre calendrier !",
                 suggestions: ["Demander un audit", "Prendre RDV", "Me contacter"]
             },
             default: {
-                text: "Je ne suis pas sûr d'avoir bien compris votre question. 🤔\n\nVoici ce que je peux vous expliquer :\n\n• Mes services (Cloud, FinOps, Transformation)\n• Mon expérience et mes certifications\n• Comment me contacter\n• Mes tarifs et disponibilités\n\nN'hésitez pas à reformuler ou à choisir une suggestion !",
+                text: "Je ne suis pas sûr d'avoir bien compris votre question, je suis un chatbot avec des réponses limitées, merci de votre compréhension. 🤔\n\nVoici ce que je peux vous expliquer :\n\n• Mes services (Cloud, FinOps, Transformation)\n• Mon expérience et mes certifications\n• Comment me contacter\n• Mes tarifs et disponibilités\n\nN'hésitez pas à reformuler ou à choisir une suggestion !",
                 suggestions: ["Quels sont vos services ?", "Parlez-moi de FinOps", "Comment vous contacter ?"]
             }
         };
