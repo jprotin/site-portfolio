@@ -56,6 +56,7 @@
                     <div class="ml-10 flex items-baseline space-x-8">
                         <a href="#accueil" class="nav-link font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Accueil</a>
                         <a href="#apropos" class="nav-link font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">À propos</a>
+                        <a href="#competences" class="nav-link font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Compétences</a>
                         <a href="#expertises" class="nav-link font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Expertises</a>
                         <a href="#realisations" class="nav-link font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Réalisations</a>
                         <a href="#contact" class="nav-link font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Contact</a>
@@ -75,6 +76,7 @@
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#accueil" class="block px-3 py-2 font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Accueil</a>
                 <a href="#apropos" class="block px-3 py-2 font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">À propos</a>
+                <a href="#competences" class="block px-3 py-2 font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Compétences</a>
                 <a href="#expertises" class="block px-3 py-2 font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Expertises</a>
                 <a href="#realisations" class="block px-3 py-2 font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Réalisations</a>
                 <a href="#contact" class="block px-3 py-2 font-poppins text-gray-700 hover:text-foreground transition-colors duration-300">Contact</a>
@@ -150,8 +152,111 @@
         </div>
     </section>
 
+    <!-- Compétences Techniques Section -->
+    <section id="competences" class="py-20 bg-background">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="font-poppins text-4xl md:text-5xl font-bold text-center mb-4 fade-in-up">
+                    Compétences <span class="text-foreground">Techniques</span>
+                </h2>
+                <p class="text-center text-accent2 mb-12 fade-in-up">Technologies et outils que je maîtrise</p>
+
+                <!-- Desktop Table -->
+                <div class="hidden md:block fade-in-up">
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gradient-to-r from-accent1 to-foreground text-white">
+                                    <th class="px-6 py-4 text-left font-poppins font-semibold text-lg">Domaine</th>
+                                    <th class="px-6 py-4 text-left font-poppins font-semibold text-lg">Technologies</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-accent1/5 transition-colors duration-200">
+                                    <td class="px-6 py-5 font-poppins font-medium text-gray-800 align-top">
+                                        Cloud Computing <span class="text-foreground">(Focus)</span>
+                                    </td>
+                                    <td class="px-6 py-5 text-gray-700 leading-relaxed">
+                                        Google Cloud Platform (GCP), Amazon Web Services (AWS), OVHcloud, Scaleway, <span class="italic text-accent2">[Possibilité d'autres fournisseurs leaders du marché...]</span>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-accent1/5 transition-colors duration-200">
+                                    <td class="px-6 py-5 font-poppins font-medium text-gray-800 align-top">
+                                        Conteneurisation
+                                    </td>
+                                    <td class="px-6 py-5 text-gray-700 leading-relaxed">
+                                        Kubernetes, Docker, EKS, GKE, ECS
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-accent1/5 transition-colors duration-200">
+                                    <td class="px-6 py-5 font-poppins font-medium text-gray-800 align-top">
+                                        Infrastructure-as-Code (IaC)
+                                    </td>
+                                    <td class="px-6 py-5 text-gray-700 leading-relaxed">
+                                        Terraform, Ansible
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-accent1/5 transition-colors duration-200">
+                                    <td class="px-6 py-5 font-poppins font-medium text-gray-800 align-top">
+                                        Services GCP & AWS
+                                    </td>
+                                    <td class="px-6 py-5 text-gray-700 leading-relaxed">
+                                        GKE, Cloud Functions, S3, RDS, DynamoDB, Lambda, Compute Engine, etc.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Mobile Cards -->
+                <div class="md:hidden space-y-4 fade-in-up">
+                    <!-- Card 1 -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-accent1">
+                        <h3 class="font-poppins font-semibold text-lg text-gray-800 mb-3">
+                            Cloud Computing <span class="text-foreground">(Focus)</span>
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            Google Cloud Platform (GCP), Amazon Web Services (AWS), OVHcloud, Scaleway, <span class="italic text-accent2">[Possibilité d'autres fournisseurs leaders du marché...]</span>
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-foreground">
+                        <h3 class="font-poppins font-semibold text-lg text-gray-800 mb-3">
+                            Conteneurisation
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            Kubernetes, Docker, EKS, GKE, ECS
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-accent3">
+                        <h3 class="font-poppins font-semibold text-lg text-gray-800 mb-3">
+                            Infrastructure-as-Code (IaC)
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            Terraform, Ansible
+                        </p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-accent2">
+                        <h3 class="font-poppins font-semibold text-lg text-gray-800 mb-3">
+                            Services GCP & AWS
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            GKE, Cloud Functions, S3, RDS, DynamoDB, Lambda, Compute Engine, etc.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Expertises Section -->
-    <section id="expertises" class="py-20 bg-background">
+    <section id="expertises" class="py-20 bg-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="font-poppins text-4xl md:text-5xl font-bold text-center mb-4 fade-in-up">
                 Mes <span class="text-foreground">Expertises</span>
