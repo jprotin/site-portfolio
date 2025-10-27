@@ -244,33 +244,31 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
-    scrollbar-color: var(--color-accent1) var(--color-background);
+    scrollbar-color: #5fa9c0 transparent;
 }
 
-/* Custom scrollbar for modal (WebKit browsers) */
+/* Custom scrollbar for modal (WebKit browsers) - Style identique au chatbot */
 .modal-body::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 .modal-body::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-    margin: 8px 0;
+    background: transparent;
 }
 
 .modal-body::-webkit-scrollbar-thumb {
-    background: var(--color-accent1);
-    border-radius: 10px;
+    background: #5fa9c0;
+    border-radius: 3px;
 }
 
 .modal-body::-webkit-scrollbar-thumb:hover {
-    background: var(--color-foreground);
+    background: #f89576;
 }
 
 /* Firefox scrollbar */
 .modal-body {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-accent1) #f1f1f1;
+    scrollbar-color: #5fa9c0 transparent;
 }
 
 .modal-close {
